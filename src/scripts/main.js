@@ -5,6 +5,10 @@ const context = canvas.getContext('2d');
 
 const ballRadius = 10;
 
+const paddleHeight = 10;
+const paddleWidth = 75;
+const paddleX = (canvas.width - paddleWidth) / 2;
+
 let x = canvas.width / 2;
 let y = canvas.height - 30;
 
@@ -19,13 +23,23 @@ function drawBall(context, x, y, radius) {
   context.closePath();
 }
 
+function drawPaddle(context, x, y, width, height) {
+  context.beginPath();
+  context.rect(x, y, width, height);
+  context.fillStyle = "#0095DD";
+  context.fill();
+  context.closePath();
+}
+
 function clearCanvas(context, width, height) {
   context.clearRect(0, 0, width, height);
 } 
 
 function draw() {
   clearCanvas(context, canvas.width, canvas.height);
+
   drawBall(context, x, y, ballRadius);
+  drawPaddle(context, paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
 
   if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
     dx = -dx;
