@@ -20,6 +20,8 @@ let dy = -2
 let rightPressed = false;
 let leftPressed = false;
 
+let interval = null;
+
 function drawBall(context, x, y, radius) {
   context.beginPath();
   context.arc(x, y, radius, 0, Math.PI*2);
@@ -50,8 +52,12 @@ function draw() {
     dx = -dx;
   }
 
-  if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+  if (y + dy < ballRadius) {
     dy = -dy;
+  } else if (y + dy > canvas.height - ballRadius) {
+    alert('Game Over');
+    location.reload();
+    clearInterval(interval);
   }
 
   if (rightPressed) {
@@ -95,4 +101,4 @@ function keyUpHandler({ key }) {
 document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
 
-setInterval(draw, FPS);
+interval = setInterval(draw, FPS);
