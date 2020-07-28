@@ -17,6 +17,16 @@ let y = canvas.height - 30;
 let dx = 2;
 let dy = -2
 
+const brickRowCount = 3;
+const brickColumnCount = 5;
+const brickWidth = 75;
+const brickHeight = 20;
+const brickPadding = 10;
+const brickOffsetTop = 30;
+const brickOffsetLeft = 30;
+
+const bricks = [];
+
 let rightPressed = false;
 let leftPressed = false;
 
@@ -38,6 +48,34 @@ function drawPaddle(context, x, y, width, height) {
   context.closePath();
 }
 
+function createBricks() {
+  for (let column = 0; column < brickColumnCount; column++) {
+    bricks[column] = [];
+
+    for (let row = 0; row < brickRowCount; row++) {
+      bricks[column][row] = { x: 0, y: 0 };
+    }
+  }
+}
+
+function drawBricks() {
+  for (let column = 0; column < brickColumnCount; column++) {
+    for (let row = 0; row < brickRowCount; row++) {
+      const brickX = (column * (brickWidth + brickPadding)) + brickOffsetLeft;
+      const brickY = (row * (brickHeight+brickPadding)) + brickOffsetTop;
+
+      bricks[column][row].x = brickX;
+      bricks[column][row].y = brickY;
+
+      context.beginPath();
+      context.rect(brickX, brickY, brickWidth, brickHeight);
+      context.fillStyle = '#0095dd';
+      context.fill();
+      context.closePath();
+    }
+  }
+}
+
 function clearCanvas(context, width, height) {
   context.clearRect(0, 0, width, height);
 } 
@@ -45,6 +83,7 @@ function clearCanvas(context, width, height) {
 function draw() {
   clearCanvas(context, canvas.width, canvas.height);
 
+  drawBricks();
   drawBall(context, x, y, ballRadius);
   drawPaddle(context, paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
 
@@ -102,7 +141,13 @@ function keyUpHandler({ key }) {
   }
 }
 
-document.addEventListener('keydown', keyDownHandler, false);
-document.addEventListener('keyup', keyUpHandler, false);
+function start() {
+  document.addEventListener('keydown', keyDownHandler, false);
+  document.addEventListener('keyup', keyUpHandler, false);
 
-interval = setInterval(draw, FPS);
+  createBricks();
+
+  interval = setInterval(draw, FPS);
+}
+
+start();
