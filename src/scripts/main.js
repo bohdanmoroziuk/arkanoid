@@ -53,7 +53,11 @@ function createBricks() {
     bricks[column] = [];
 
     for (let row = 0; row < brickRowCount; row++) {
-      bricks[column][row] = { x: 0, y: 0 };
+      bricks[column][row] = { 
+        x: 0, 
+        y: 0,
+        status: 1 
+      };
     }
   }
 }
@@ -61,17 +65,19 @@ function createBricks() {
 function drawBricks() {
   for (let column = 0; column < brickColumnCount; column++) {
     for (let row = 0; row < brickRowCount; row++) {
-      const brickX = (column * (brickWidth + brickPadding)) + brickOffsetLeft;
-      const brickY = (row * (brickHeight+brickPadding)) + brickOffsetTop;
+      if (bricks[column][row].status === 1) {
+        const brickX = (column * (brickWidth + brickPadding)) + brickOffsetLeft;
+        const brickY = (row * (brickHeight+brickPadding)) + brickOffsetTop;
 
-      bricks[column][row].x = brickX;
-      bricks[column][row].y = brickY;
+        bricks[column][row].x = brickX;
+        bricks[column][row].y = brickY;
 
-      context.beginPath();
-      context.rect(brickX, brickY, brickWidth, brickHeight);
-      context.fillStyle = '#0095dd';
-      context.fill();
-      context.closePath();
+        context.beginPath();
+        context.rect(brickX, brickY, brickWidth, brickHeight);
+        context.fillStyle = '#0095dd';
+        context.fill();
+        context.closePath();
+      }
     }
   }
 }
@@ -80,12 +86,34 @@ function clearCanvas(context, width, height) {
   context.clearRect(0, 0, width, height);
 } 
 
+function detectCollision() {
+  for (let column = 0; column < brickColumnCount; column++) {
+    for (let row = 0; row < brickRowCount; row++) {
+      const brick = bricks[column][row];
+        
+      if (brick.status === 1) {
+        if (
+          x > brick.x && 
+          x < brick.x + brickWidth && 
+          y > brick.y && 
+          y < brick.y + brickHeight
+        ) {
+          dy = -dy;
+          brick.status = 0;
+        }
+      }
+    }
+}
+}
+
 function draw() {
   clearCanvas(context, canvas.width, canvas.height);
 
   drawBricks();
   drawBall(context, x, y, ballRadius);
   drawPaddle(context, paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+
+  detectCollision();
 
   if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
     dx = -dx;
