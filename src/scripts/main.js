@@ -7,13 +7,18 @@ const ballRadius = 10;
 
 const paddleHeight = 10;
 const paddleWidth = 75;
-const paddleX = (canvas.width - paddleWidth) / 2;
+const paddleSpeed = 7;
+
+let paddleX = (canvas.width - paddleWidth) / 2;
 
 let x = canvas.width / 2;
 let y = canvas.height - 30;
 
 let dx = 2;
 let dy = -2
+
+let rightPressed = false;
+let leftPressed = false;
 
 function drawBall(context, x, y, radius) {
   context.beginPath();
@@ -49,8 +54,45 @@ function draw() {
     dy = -dy;
   }
 
+  if (rightPressed) {
+    paddleX += paddleSpeed;
+
+    if (paddleX + paddleWidth > canvas.width) {
+      paddleX = canvas.width - paddleWidth;
+    }
+  }
+
+  if (leftPressed) {
+    paddleX -= paddleSpeed;
+
+    if (paddleX < 0) {
+      paddleX = 0;
+    }
+  }
+
   x += dx;
   y += dy;
 }
+
+function keyDownHandler({ key }) {
+  if (['Right', 'ArrowRight'].includes(key)) {
+    rightPressed = true;
+  }
+  if (['Left', 'ArrowLeft'].includes(key)) {
+    leftPressed = true;
+  }
+}
+
+function keyUpHandler({ key }) {
+  if (['Right', 'ArrowRight'].includes(key)) {
+    rightPressed = false;
+  }
+  if (['Left', 'ArrowLeft'].includes(key)) {
+    leftPressed = false;
+  }
+}
+
+document.addEventListener('keydown', keyDownHandler, false);
+document.addEventListener('keyup', keyUpHandler, false);
 
 setInterval(draw, FPS);
