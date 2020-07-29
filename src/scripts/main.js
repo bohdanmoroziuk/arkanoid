@@ -34,6 +34,8 @@ let interval = null;
 
 let score = 0;
 
+let lives = 3;
+
 function drawBall(context, x, y, radius) {
   context.beginPath();
   context.arc(x, y, radius, 0, Math.PI*2);
@@ -121,6 +123,12 @@ function drawScore() {
   context.fillText(`Score: ${score}`, 8, 20);
 }
 
+function drawLives() {
+  context.font = '1rem Arial';
+  context.fillStyle = '#0095dd';
+  context.fillText(`Lives: ${lives}`, canvas.width - 65, 20);
+}
+
 function draw() {
   clearCanvas(context, canvas.width, canvas.height);
 
@@ -128,6 +136,7 @@ function draw() {
   drawBall(context, x, y, ballRadius);
   drawPaddle(context, paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
   drawScore();
+  drawLives();
 
   detectCollision();
 
@@ -141,9 +150,19 @@ function draw() {
     if (x > paddleX && x < paddleX + paddleWidth) {
       dy = -dy;
     } else {
-      alert('Game Over');
-      location.reload();
-      clearInterval(interval);
+      lives--;
+
+      if (!lives) {
+        alert('Game Over');
+        location.reload();
+        clearInterval(interval);
+      } else {
+        x = canvas.width / 2;
+        y = canvas.height - 30;
+        dx = 2;
+        dy = -2;
+        paddleX = (canvas.width - paddleWidth) / 2;
+      }
     }
   }
 
