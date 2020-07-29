@@ -32,6 +32,8 @@ let leftPressed = false;
 
 let interval = null;
 
+let score = 0;
+
 function drawBall(context, x, y, radius) {
   context.beginPath();
   context.arc(x, y, radius, 0, Math.PI*2);
@@ -100,10 +102,17 @@ function detectCollision() {
         ) {
           dy = -dy;
           brick.status = 0;
+          score++;
         }
       }
     }
+  }
 }
+
+function drawScore() {
+  context.font = '1rem Arial';
+  context.fillStyle = '#0095dd';
+  context.fillText(`Score: ${score}`, 8, 20);
 }
 
 function draw() {
@@ -112,6 +121,7 @@ function draw() {
   drawBricks();
   drawBall(context, x, y, ballRadius);
   drawPaddle(context, paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+  drawScore();
 
   detectCollision();
 
