@@ -103,6 +103,12 @@ function detectCollision() {
           dy = -dy;
           brick.status = 0;
           score++;
+
+          if (score === brickRowCount * brickColumnCount) {
+            alert('You win!');
+            location.reload();
+            clearInterval(interval);
+          }
         }
       }
     }
