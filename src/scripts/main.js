@@ -109,7 +109,6 @@ function detectCollision() {
           if (score === brickRowCount * brickColumnCount) {
             alert('You win!');
             location.reload();
-            clearInterval(interval);
           }
         }
       }
@@ -155,7 +154,6 @@ function draw() {
       if (!lives) {
         alert('Game Over');
         location.reload();
-        clearInterval(interval);
       } else {
         x = canvas.width / 2;
         y = canvas.height - 30;
@@ -184,6 +182,8 @@ function draw() {
 
   x += dx;
   y += dy;
+
+  requestAnimationFrame(draw);
 }
 
 function keyDownHandler({ key }) {
@@ -209,8 +209,7 @@ function start() {
   document.addEventListener('keyup', keyUpHandler, false);
 
   createBricks();
-
-  interval = setInterval(draw, FPS);
+  draw();
 }
 
 start();
