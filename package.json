@@ -1,7 +1,7 @@
 {
   "name": "arkanoid",
   "version": "1.0.0",
-  "description": "2D game on pure JavaScript",
+  "description": "The classic minimal 2d Arkanoid game created with JavaScript and Canvas.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

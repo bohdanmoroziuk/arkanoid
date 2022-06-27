@@ -1,3 +1,7 @@
 # Arkanoid
 
-> 2D game on pure JavaScript
+> The classic minimal 2d Arkanoid game created with JavaScript and Canvas.
+
+## Preview
+
+<img src="./arkanoid.png" alt="Arkanoid" />
